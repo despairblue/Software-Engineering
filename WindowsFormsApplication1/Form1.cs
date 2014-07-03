@@ -31,10 +31,22 @@ namespace WindowsFormsApplication1
             {
                 for (int y = 0; y < 4; y++)
                 {
+                    Pen pen;
                     Rectangle rect = new Rectangle(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
-                    RectangleF rectF = new RectangleF(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
-                    e.Graphics.DrawRectangle(new Pen(Color.Purple), rect);
-                    e.Graphics.DrawString(gameModel.GameState[x,y].ToString(), new Font(FontFamily.GenericMonospace, cellsize/4), new SolidBrush(Color.Purple), rectF);
+
+                    if (gameModel.GameState[x, y] > 0)
+                    {
+                        RectangleF rectF = new RectangleF(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
+                        e.Graphics.DrawString(gameModel.GameState[x, y].ToString(), new Font(FontFamily.GenericMonospace, cellsize / 4), new SolidBrush(Color.Purple), rectF);
+
+                        pen = new Pen(Color.Purple);
+                    }
+                    else
+                    {
+                        pen = new Pen(Color.Gray);
+                    }
+
+                    e.Graphics.DrawRectangle(pen, rect);
                 }
             }
         }
@@ -43,9 +55,33 @@ namespace WindowsFormsApplication1
         {
             Size formSize = new Size(offset * 2 + cellsize * 4, offset * 2 + cellsize * 4);
 
+            // set double buffering to remove flickering
+            this.DoubleBuffered = true;
+
             this.ClientSize = formSize;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
 
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                    gameModel.pushDown();
+                    break;
+                case Keys.Left:
+                    gameModel.pushLeft();
+                    break;
+                case Keys.Right:
+                    gameModel.pushRight();
+                    break;
+                case Keys.Up:
+                    gameModel.pushUp();
+                    break;
+            }
+
+            this.Invalidate();
         }
     }
 }
