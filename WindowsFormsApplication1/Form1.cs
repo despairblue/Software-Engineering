@@ -12,14 +12,18 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        private int offset;
+        private int cellsize;
+        private GameModel gameModel;
+
+        public Form1(GameModel gameModel, int offset = 10, int cellsize = 64)
         {
             InitializeComponent();
-        }
 
-        private int offset = 10;
-        private int cellsize = 64;
-        private GameModel gameModel = new GameModel();
+            this.offset = offset;
+            this.cellsize = cellsize;
+            this.gameModel = gameModel;
+        }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {

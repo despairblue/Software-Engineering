@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication1
 {
-    class GameModel
+    public class GameModel
     {
         private int[,] field = new int[4,4];
 
