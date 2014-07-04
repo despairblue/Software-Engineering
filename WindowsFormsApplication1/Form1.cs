@@ -34,10 +34,10 @@ namespace WindowsFormsApplication1
                     Pen pen;
                     Rectangle rect = new Rectangle(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
 
-                    if (gameModel.GameState[x, y] > 0)
+                    if (gameModel.playingField[x, y] > 0)
                     {
                         RectangleF rectF = new RectangleF(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
-                        e.Graphics.DrawString(gameModel.GameState[x, y].ToString(), new Font(FontFamily.GenericMonospace, cellsize / 4), new SolidBrush(Color.Purple), rectF);
+                        e.Graphics.DrawString(gameModel.playingField[x, y].ToString(), new Font(FontFamily.GenericMonospace, cellsize / 4), new SolidBrush(Color.Purple), rectF);
 
                         pen = new Pen(Color.Purple);
                     }
@@ -79,6 +79,19 @@ namespace WindowsFormsApplication1
                 case Keys.Up:
                     gameModel.pushUp();
                     break;
+            }
+
+            if (gameModel.gameState == GameModel.States.LOST)
+            {
+                this.Text = "You Lost! Restart the App!";
+            }
+            else if (gameModel.gameState == GameModel.States.WON)
+            {
+                this.Text = "Congrats, You Won!";
+            }
+            else
+            {
+                this.Text = "Good, Next Move!";
             }
 
             this.Invalidate();
