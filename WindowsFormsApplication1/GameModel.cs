@@ -98,6 +98,7 @@ namespace WindowsFormsApplication1
                 int rowStart = field.GetLength(1) - 1;
                 int rowEnd = 0;
                 int rowDirection = -1;
+                bool somethingMoved = false;
 
                 // go through each collumn
                 for (int column = columnStart; column != columnEnd; column += columnDirection)
@@ -117,6 +118,8 @@ namespace WindowsFormsApplication1
                                 if (field[column, innerRow] == 0 && field[column, innerRow + rowDirection] != 0)
                                 {
                                     repeatColumn = true;
+                                    // if the current number is a 0 and the one above isn't the one above will move down, that counts as a game field change, thus we can add a new random number
+                                    somethingMoved = true;
                                 }
 
                                 field[column, innerRow] = field[column, innerRow + rowDirection];
@@ -141,10 +144,14 @@ namespace WindowsFormsApplication1
                     // through each row
                     for (int row = rowStart; row != rowEnd; row += rowDirection)
                     {
-                        if (field[column, row] == field[column, row + rowDirection])
+                        if (field[column, row] != 0 && field[column, row] == field[column, row + rowDirection])
                         {
+                            // if we merge something the game field changes and it's ok to add another number later
+                            somethingMoved = true;
+
                             field[column, row] *= 2;
 
+                            // move all numbers above down
                             for (int innerRow = row + rowDirection; innerRow != rowEnd; innerRow += rowDirection)
                             {
                                 field[column, innerRow] = field[column, innerRow + rowDirection];
@@ -163,7 +170,10 @@ namespace WindowsFormsApplication1
                 {
                     if (placeLeft())
                     {
-                        insertRandomNumber();
+                        if (somethingMoved)
+                        {
+                            insertRandomNumber();
+                        }
 
                         if (!anyMovesLeft())
                         {
