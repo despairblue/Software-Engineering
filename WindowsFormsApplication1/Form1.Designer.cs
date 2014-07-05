@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Eine Pfeiltaste drücken!";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
