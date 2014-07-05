@@ -27,9 +27,11 @@ namespace WindowsFormsApplication1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            for (int x = 0; x < 4; x++)
+            int[,] field = gameModel.playingField;
+
+            for (int x = 0; x < field.GetLength(0); x++)
             {
-                for (int y = 0; y < 4; y++)
+                for (int y = 0; y < field.GetLength(1); y++)
                 {
                     Pen pen;
                     Rectangle rect = new Rectangle(offset + cellsize * x, offset + cellsize * y, cellsize, cellsize);
@@ -53,7 +55,7 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Size formSize = new Size(offset * 2 + cellsize * 4, offset * 2 + cellsize * 4);
+            Size formSize = new Size(offset * 2 + cellsize * gameModel.playingField.GetLength(0), offset * 2 + cellsize * gameModel.playingField.GetLength(1));
 
             // set double buffering to remove flickering
             this.DoubleBuffered = true;
