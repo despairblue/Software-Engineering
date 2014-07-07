@@ -8,12 +8,15 @@ namespace WindowsFormsApplication1
 {
     public class GameModel
     {
+        // the states the game can be in
         public enum States
         {
             RUNNING, LOST, WON
         }
 
+        // the game field is saved as an two dimensial array
         private int[,] field = new int[4, 4];
+        // the game starts obviously with the state RUNNING
         private States state = States.RUNNING;
 
         public GameModel()
@@ -25,6 +28,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // setter for the fild
         public int[,] playingField
         {
             get
@@ -33,6 +37,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // setter for the game state
         public States gameState
         {
             get
@@ -41,6 +46,8 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // tries to find a free cell in the game field
+        // runs indifinite if the game field is full, so call placeLeft(() before.
         private void insertRandomNumber()
         {
             Random ran = new Random();
@@ -59,6 +66,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // rotate the game field 90 degrees to the right.
         private int[,] rotateRight(int[,] matrix)
         {
             int[,] newMatrix = new int[matrix.GetLength(1), matrix.GetLength(0)];
@@ -74,6 +82,7 @@ namespace WindowsFormsApplication1
             return newMatrix;
         }
 
+        // see documentation
         public void pushLeft()
         {
             field = rotateRight(rotateRight(rotateRight(field)));
@@ -81,6 +90,7 @@ namespace WindowsFormsApplication1
             field = rotateRight(field);
         }
 
+        // see documentation
         public void pushRight()
         {
             field = rotateRight(field);
@@ -88,6 +98,7 @@ namespace WindowsFormsApplication1
             field = rotateRight(rotateRight(rotateRight(field)));
         }
 
+        // pushes all numbers down 
         public void pushDown()
         {
             if (state == States.RUNNING)
@@ -123,12 +134,7 @@ namespace WindowsFormsApplication1
                                 }
 
                                 field[column, innerRow] = field[column, innerRow + rowDirection];
-
-                                // note if anything was moved beside zeros
-                                //if (field[collumn, innerRow] != 0)
-                                //{
-                                //    repeatCollumn = true;
-                                //}
+                                ;
                             }
                             // fill last row with a zero
                             field[column, rowEnd] = 0;
@@ -162,19 +168,23 @@ namespace WindowsFormsApplication1
                     }
                 }
 
+                // check if won
                 if (any2048())
                 {
                     state = States.WON;
                 }
                 else
                 {
+                    // check empty cells left
                     if (placeLeft())
                     {
+                        // only inster number if something changed
                         if (somethingMoved)
                         {
                             insertRandomNumber();
                         }
 
+                        // check if lost
                         if (!anyMovesLeft())
                         {
                             state = States.LOST;
@@ -189,6 +199,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // returns true if any cell contains the nummber 2048
         private bool any2048()
         {
             for (int column = 0; column < field.GetLength(0); column++)
@@ -205,6 +216,7 @@ namespace WindowsFormsApplication1
             return false;
         }
 
+        // return true if it find an empty cell (a cell containing a zero)
         private bool placeLeft()
         {
             for (int column = 0; column < field.GetLength(0); column++)
@@ -221,6 +233,7 @@ namespace WindowsFormsApplication1
             return false;
         }
 
+        // check if there are any viable moves left.
         private bool anyMovesLeft()
         {
             // if the game field isn't full there are moves left
@@ -228,6 +241,7 @@ namespace WindowsFormsApplication1
             {
                 return true;
             }
+            // checks for every cell if any neighbouring cells contain the same number, that would count as a viable move, so the function would return true
             for (int column = 0; column < field.GetLength(0); column++)
             {
                 for (int row = 0; row < field.GetLength(1); row++)
@@ -266,6 +280,7 @@ namespace WindowsFormsApplication1
             return false;
         }
 
+        // see documentation
         public void pushUp()
         {
             field = rotateRight(rotateRight(field));

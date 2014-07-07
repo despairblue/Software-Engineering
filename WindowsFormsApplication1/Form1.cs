@@ -25,10 +25,12 @@ namespace WindowsFormsApplication1
             this.gameModel = gameModel;
         }
 
+        // renders the game field
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             int[,] field = gameModel.playingField;
 
+            // draws a rectangle for every cell and the containing number, except for zeros.
             for (int x = 0; x < field.GetLength(0); x++)
             {
                 for (int y = 0; y < field.GetLength(1); y++)
@@ -53,6 +55,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        // sets some initial windows form properties
         private void Form1_Load(object sender, EventArgs e)
         {
             Size formSize = new Size(offset * 2 + cellsize * gameModel.playingField.GetLength(0), offset * 2 + cellsize * gameModel.playingField.GetLength(1));
@@ -65,6 +68,7 @@ namespace WindowsFormsApplication1
 
         }
 
+        // handles input 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -83,6 +87,7 @@ namespace WindowsFormsApplication1
                     break;
             }
 
+            // check the game's state and outputs a corresponding message
             if (gameModel.gameState == GameModel.States.LOST)
             {
                 this.Text = "You Lost! Restart the App!";
